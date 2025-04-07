@@ -123,7 +123,7 @@ streamlit run app.py
 
 **Abhinav Yadav**  
 💼 AI/ML | LLMs | Data Science  
-[LinkedIn]([linkedin](https://www.linkedin.com/in/abhinav-yadav-70088a252/)) 
+[LinkedIn](https://www.linkedin.com/in/abhinav-yadav-70088a252/)
 
 ---
 
