@@ -5,7 +5,7 @@ matplotlib
 pytesseract
 Pillow
 PyPDF2
-docx
+python-docx
 langchain
 langchain-groq
 langchain-experimental
