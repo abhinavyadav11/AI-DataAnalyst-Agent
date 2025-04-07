@@ -1,0 +1,11 @@
+streamlit
+pandas
+numpy
+matplotlib
+pytesseract
+Pillow
+PyPDF2
+docx
+langchain
+langchain-groq
+langchain-experimental
