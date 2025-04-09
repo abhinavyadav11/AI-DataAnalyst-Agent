@@ -30,7 +30,7 @@ os.environ['GROQ_API_KEY'] = st.secrets.get("GROQ_API_KEY", "your_default_api_ke
 def ocr_space_image(file_path, api_key):
     payload = {
         'isOverlayRequired': False,
-        'apikey': K84087789988957,
+        'apikey': api_key,
         'language': 'eng',
     }
     with open(file_path, 'rb') as f:
@@ -71,7 +71,7 @@ def process_file(file_path, original_filename=None):
             text = ''.join([page.extract_text() or '' for page in reader.pages])
             return 'text', text, None
         elif extension in ['jpg', 'jpeg', 'png']:
-            api_key = st.secrets.get("OCR_SPACE_API_KEY", "K84087789988957")
+            api_key = st.secrets.get("OCR_SPACE_API_KEY", "your_default_api_key_here")
             text = ocr_space_image(file_path, api_key)
             return 'text', text, None
         else:
