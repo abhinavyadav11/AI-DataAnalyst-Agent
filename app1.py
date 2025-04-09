@@ -11,20 +11,35 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain.memory import ChatMessageHistory
 from PyPDF2 import PdfReader
-import pytesseract
 from PIL import Image
 import docx
 import tempfile
 import streamlit as st
+import requests
 
 # ✅ Set the actual title of your app
 st.set_page_config(page_title="AI File Analyst", page_icon="📂")
-st.title("📂 AI File Analyst")  # <-- make sure this matches your new title
+st.title("📂 AI File Analyst")
 st.caption("Upload your data file\nDrag and drop file here\nLimit 200MB per file • CSV, XLSX, PDF, DOCX, TXT, JPG, JPEG, PNG")
-
 
 # ✅ Set API key (either from secrets or fallback for local testing)
 os.environ['GROQ_API_KEY'] = st.secrets.get("GROQ_API_KEY", "your_default_api_key_here")
+
+# ✅ OCR.Space function
+def ocr_space_image(file_path, api_key):
+    payload = {
+        'isOverlayRequired': False,
+        'apikey': api_key,
+        'language': 'eng',
+    }
+    with open(file_path, 'rb') as f:
+        response = requests.post(
+            'https://api.ocr.space/parse/image',
+            files={file_path: f},
+            data=payload,
+        )
+    result = response.json()
+    return result['ParsedResults'][0]['ParsedText']
 
 # ✅ Function to process different types of files
 def process_file(file_path, original_filename=None):
@@ -49,8 +64,8 @@ def process_file(file_path, original_filename=None):
             text = ''.join([page.extract_text() or '' for page in reader.pages])
             return 'text', text, None
         elif extension in ['jpg', 'jpeg', 'png']:
-            img = Image.open(file_path)
-            text = pytesseract.image_to_string(img)
+            api_key = st.secrets.get("OCR_SPACE_API_KEY", "K84087789988957")
+            text = ocr_space_image(file_path, api_key)
             return 'text', text, None
         else:
             raise ValueError(f"Unsupported file type: {extension}")
@@ -117,7 +132,6 @@ if uploaded_file:
     else:
         st.subheader("📄 Text successfully extracted from the file.")
         st.info("You're all set. Ask a question about your file below!")
-
 
         prompt = PromptTemplate.from_template(
             "You are a helpful data analyst. The following text was extracted from a file: {text}."
