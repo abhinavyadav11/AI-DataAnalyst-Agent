@@ -20,7 +20,7 @@ import requests
 # ✅ Set the actual title of your app
 st.set_page_config(page_title="AI File Analyst", page_icon="📂")
 st.title("📂 AI File Analyst")
-st.caption("Upload your data file\nDrag and drop file here\nLimit 200MB per file • CSV, XLSX, PDF, DOCX, TXT.         * UPTO 1MB for JPG, JPEG, PNG")
+st.caption("Upload your data file\nDrag and drop file here\nLimit 200MB per file • CSV, XLSX, PDF, DOCX, TXT AND UPTO 1MB for JPG, JPEG, PNG")
 
 # ✅ Set API key (either from secrets or fallback for local testing)
 os.environ['GROQ_API_KEY'] = st.secrets.get("GROQ_API_KEY", "your_default_api_key_here")
