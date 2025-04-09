@@ -27,7 +27,24 @@ os.environ['GROQ_API_KEY'] = st.secrets.get("GROQ_API_KEY", "your_default_api_ke
 
 # ✅ OCR.Space function
 
+def resize_image_if_needed(file_path, max_size_kb=1024):
+    size_kb = os.path.getsize(file_path) / 1024
+    if size_kb <= max_size_kb:
+        return file_path
+
+    image = Image.open(file_path)
+    quality = 95
+    while size_kb > max_size_kb and quality > 10:
+        resized_path = file_path.replace(".", "_resized.")
+        image.save(resized_path, optimize=True, quality=quality)
+        size_kb = os.path.getsize(resized_path) / 1024
+        quality -= 5
+    return resized_path
+
+
 def ocr_space_image(file_path, api_key):
+    file_path = resize_image_if_needed(file_path)
+
     payload = {
         'isOverlayRequired': False,
         'apikey': api_key,
@@ -42,10 +59,15 @@ def ocr_space_image(file_path, api_key):
 
     result = response.json()
 
+    if result.get('IsErroredOnProcessing'):
+        error_msg = result.get('ErrorMessage', ['Unknown error'])[0]
+        raise Exception(f"OCR failed: {error_msg}")
+
     if 'ParsedResults' not in result or not result['ParsedResults']:
-        raise Exception(f"Error extracting text: 'ParsedResults' not found or malformed response: {result}")
+        raise Exception("OCR failed: No ParsedResults in response")
 
     return result['ParsedResults'][0].get('ParsedText', '')
+
 
 
 # ✅ Function to process different types of files
