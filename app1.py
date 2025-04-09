@@ -30,20 +30,23 @@ os.environ['GROQ_API_KEY'] = st.secrets.get("GROQ_API_KEY", "your_default_api_ke
 def ocr_space_image(file_path, api_key):
     payload = {
         'isOverlayRequired': False,
-        'apikey': api_key,
+        'apikey': K84087789988957,
         'language': 'eng',
     }
     with open(file_path, 'rb') as f:
         response = requests.post(
             'https://api.ocr.space/parse/image',
-            files={'file': f},
+            files={file_path: f},
             data=payload,
         )
+
     result = response.json()
-    try:
-        return result['ParsedResults'][0]['ParsedText']
-    except (KeyError, IndexError):
-        raise ValueError("Error extracting text: 'ParsedResults' not found or malformed response")
+
+    if 'ParsedResults' not in result or not result['ParsedResults']:
+        raise Exception(f"Error extracting text: 'ParsedResults' not found or malformed response: {result}")
+
+    return result['ParsedResults'][0].get('ParsedText', '')
+
 
 # ✅ Function to process different types of files
 def process_file(file_path, original_filename=None):
