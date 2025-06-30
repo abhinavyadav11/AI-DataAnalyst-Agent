@@ -5,12 +5,6 @@ Upload a file — get instant summaries, insights, and Q&A using LLMs.
 
 ---
 
-## 🚀 Demo
-
-🌐 [Live Streamlit App](https://your-app-url.streamlit.app)
-
----
-
 ## 📦 Features
 
 - ✅ Upload files: `.csv`, `.xlsx`, `.pdf`, `.docx`, `.txt`, `.jpg`, `.png`, and more  
