@@ -3,6 +3,9 @@
 **AI-powered document analyzer built with Streamlit**  
 Upload a file — get instant summaries, insights, and Q&A using LLMs.
 
+# Have a look
+[https://www.linkedin.com/posts/abhinav-yadav-70088a252_ai-langchain-groq-activity-7315826586652418049-aqjX?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD5sD3ABrDZo3cFj4dZWfhAsRAujwFMPDOY]
+
 ---
 
 ## 📦 Features
